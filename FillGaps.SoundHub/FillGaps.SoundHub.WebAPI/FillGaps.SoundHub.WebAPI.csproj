@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FillGaps.SoundHub.Application\FillGaps.SoundHub.Application.csproj" />
+    <ProjectReference Include="..\FillGaps.SoundHub.Domain\FillGaps.SoundHub.Domain.csproj" />
+    <ProjectReference Include="..\FillGaps.SoundHub.Infrastructure\FillGaps.SoundHub.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,6 @@
+@FillGaps.SoundHub.WebAPI_HostAddress = http://localhost:5115
+
+GET {{FillGaps.SoundHub.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

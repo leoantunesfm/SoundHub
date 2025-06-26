@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36127.28 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FillGaps.SoundHub.WebAPI", "FillGaps.SoundHub.WebAPI\FillGaps.SoundHub.WebAPI.csproj", "{0B598866-F79C-4490-8015-407CC09F1B97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FillGaps.SoundHub.Domain", "FillGaps.SoundHub.Domain\FillGaps.SoundHub.Domain.csproj", "{A38BBB71-CCF4-4598-B261-BCB6A20B1856}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FillGaps.SoundHub.Application", "FillGaps.SoundHub.Application\FillGaps.SoundHub.Application.csproj", "{E17AA31A-366F-4E05-830E-107B7F25873B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FillGaps.SoundHub.Infrastructure", "FillGaps.SoundHub.Infrastructure\FillGaps.SoundHub.Infrastructure.csproj", "{A17015D7-5032-46B8-BF73-FD5F10167B47}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B598866-F79C-4490-8015-407CC09F1B97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B598866-F79C-4490-8015-407CC09F1B97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B598866-F79C-4490-8015-407CC09F1B97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B598866-F79C-4490-8015-407CC09F1B97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A38BBB71-CCF4-4598-B261-BCB6A20B1856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A38BBB71-CCF4-4598-B261-BCB6A20B1856}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A38BBB71-CCF4-4598-B261-BCB6A20B1856}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A38BBB71-CCF4-4598-B261-BCB6A20B1856}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E17AA31A-366F-4E05-830E-107B7F25873B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E17AA31A-366F-4E05-830E-107B7F25873B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E17AA31A-366F-4E05-830E-107B7F25873B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E17AA31A-366F-4E05-830E-107B7F25873B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A17015D7-5032-46B8-BF73-FD5F10167B47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A17015D7-5032-46B8-BF73-FD5F10167B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A17015D7-5032-46B8-BF73-FD5F10167B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A17015D7-5032-46B8-BF73-FD5F10167B47}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {311FEF5E-6F6E-44CD-A056-D5329658B1F2}
+	EndGlobalSection
+EndGlobal
