@@ -1,10 +1,23 @@
+using FillGaps.SoundHub.Domain.Identity;
+using FillGaps.SoundHub.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<SoundHubDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddIdentity<Usuario, IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<SoundHubDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 

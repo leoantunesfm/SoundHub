@@ -10,7 +10,7 @@ namespace FillGaps.SoundHub.Domain.Catalog
     {
         public Guid Id { get; private set; }
         public string Nome { get; private set; }
-        public string? Descricao { get; private set; } // Opcional
+        public string? Descricao { get; private set; }
 
         public virtual ICollection<Musica> Musicas { get; private set; } = new List<Musica>();
         public virtual ICollection<Artista> Artistas { get; private set; } = new List<Artista>();

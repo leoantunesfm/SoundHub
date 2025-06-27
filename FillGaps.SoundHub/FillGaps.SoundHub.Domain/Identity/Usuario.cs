@@ -19,7 +19,6 @@ public class Usuario : IdentityUser<Guid>
     
     public void FavoritarMusica(Musica musica)
     {
-        // Regra de negócio: não adicionar músicas duplicadas.
         if (!MusicasFavoritas.Any(m => m.Id == musica.Id))
         {
             MusicasFavoritas.Add(musica);
@@ -37,7 +36,6 @@ public class Usuario : IdentityUser<Guid>
 
     public void FavoritarArtista(Artista artista)
     {
-        // Regra de negócio: não adicionar artistas duplicados.
         if (!ArtistasFavoritos.Any(a => a.Id == artista.Id))
         {
             ArtistasFavoritos.Add(artista);
@@ -53,7 +51,6 @@ public class Usuario : IdentityUser<Guid>
         }
     }
 
-    // Método de consulta útil para a camada de apresentação (UI)
     public bool IsMusicaFavorita(Guid musicaId)
     {
         return MusicasFavoritas.Any(m => m.Id == musicaId);
