@@ -11,7 +11,8 @@ namespace FillGaps.SoundHub.Domain.Catalog
         public Guid Id { get; private set; }
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
-        public string ImagemUrl { get; private set; }
+        public string? ImagemUrl { get; private set; }
+
         private readonly List<Album> _albuns = new();
         public IReadOnlyCollection<Album> Albuns => _albuns.AsReadOnly();
         public virtual ICollection<Genero> Generos { get; private set; } = new List<Genero>();

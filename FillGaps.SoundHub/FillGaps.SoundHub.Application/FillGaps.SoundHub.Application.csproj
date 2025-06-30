@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FillGaps.SoundHub.Domain\FillGaps.SoundHub.Domain.csproj" />
+    <ProjectReference Include="..\FillGaps.SoundHub.Infrastructure\FillGaps.SoundHub.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
