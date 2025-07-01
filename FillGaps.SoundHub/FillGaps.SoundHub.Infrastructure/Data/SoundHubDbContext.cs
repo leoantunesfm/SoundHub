@@ -54,6 +54,16 @@ namespace FillGaps.SoundHub.Infrastructure.Data
                     duracao.Property(d => d.Segundos).HasColumnName("DuracaoEmSegundos");
                 });
 
+            builder.Entity<Usuario>()
+                .HasMany(u => u.MusicasFavoritas)
+                .WithMany(m => m.UsuariosQueFavoritaram)
+                .UsingEntity(j => j.ToTable("UsuarioMusicaFavoritos"));
+
+            builder.Entity<Usuario>()
+                .HasMany(u => u.ArtistasFavoritos)
+                .WithMany(a => a.UsuariosQueFavoritaram)
+                .UsingEntity(j => j.ToTable("UsuarioArtistaFavoritos"));
+
             builder.Entity<PlaylistMusica>()
                 .HasKey(pm => new { pm.PlaylistId, pm.MusicaId });
 

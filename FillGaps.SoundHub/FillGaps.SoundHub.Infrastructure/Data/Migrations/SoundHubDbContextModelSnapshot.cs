@@ -37,6 +37,21 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                     b.ToTable("ArtistaGenero");
                 });
 
+            modelBuilder.Entity("ArtistaUsuario", b =>
+                {
+                    b.Property<Guid>("ArtistasFavoritosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UsuariosQueFavoritaramId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ArtistasFavoritosId", "UsuariosQueFavoritaramId");
+
+                    b.HasIndex("UsuariosQueFavoritaramId");
+
+                    b.ToTable("UsuarioArtistaFavoritos", (string)null);
+                });
+
             modelBuilder.Entity("FillGaps.SoundHub.Domain.Billing.Assinatura", b =>
                 {
                     b.Property<Guid>("Id")
@@ -169,12 +184,7 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<Guid?>("UsuarioId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Artistas");
                 });
@@ -210,14 +220,9 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<Guid?>("UsuarioId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Musicas");
                 });
@@ -483,6 +488,21 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MusicaUsuario", b =>
+                {
+                    b.Property<Guid>("MusicasFavoritasId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UsuariosQueFavoritaramId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("MusicasFavoritasId", "UsuariosQueFavoritaramId");
+
+                    b.HasIndex("UsuariosQueFavoritaramId");
+
+                    b.ToTable("UsuarioMusicaFavoritos", (string)null);
+                });
+
             modelBuilder.Entity("ArtistaGenero", b =>
                 {
                     b.HasOne("FillGaps.SoundHub.Domain.Catalog.Artista", null)
@@ -494,6 +514,21 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                     b.HasOne("FillGaps.SoundHub.Domain.Catalog.Genero", null)
                         .WithMany()
                         .HasForeignKey("GenerosId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ArtistaUsuario", b =>
+                {
+                    b.HasOne("FillGaps.SoundHub.Domain.Catalog.Artista", null)
+                        .WithMany()
+                        .HasForeignKey("ArtistasFavoritosId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FillGaps.SoundHub.Domain.Identity.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UsuariosQueFavoritaramId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -535,14 +570,6 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FillGaps.SoundHub.Domain.Catalog.Artista", b =>
-                {
-                    b.HasOne("FillGaps.SoundHub.Domain.Identity.Usuario", null)
-                        .WithMany("ArtistasFavoritos")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("FillGaps.SoundHub.Domain.Catalog.Musica", b =>
                 {
                     b.HasOne("FillGaps.SoundHub.Domain.Catalog.Album", null)
@@ -550,11 +577,6 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                         .HasForeignKey("AlbumId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("FillGaps.SoundHub.Domain.Identity.Usuario", null)
-                        .WithMany("MusicasFavoritas")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsOne("FillGaps.SoundHub.Domain.Catalog.Duracao", "Duracao", b1 =>
                         {
@@ -673,6 +695,21 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MusicaUsuario", b =>
+                {
+                    b.HasOne("FillGaps.SoundHub.Domain.Catalog.Musica", null)
+                        .WithMany()
+                        .HasForeignKey("MusicasFavoritasId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FillGaps.SoundHub.Domain.Identity.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UsuariosQueFavoritaramId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("FillGaps.SoundHub.Domain.Billing.Assinatura", b =>
                 {
                     b.Navigation("Transacoes");
@@ -690,12 +727,8 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("FillGaps.SoundHub.Domain.Identity.Usuario", b =>
                 {
-                    b.Navigation("ArtistasFavoritos");
-
                     b.Navigation("Assinatura")
                         .IsRequired();
-
-                    b.Navigation("MusicasFavoritas");
 
                     b.Navigation("Playlists");
                 });

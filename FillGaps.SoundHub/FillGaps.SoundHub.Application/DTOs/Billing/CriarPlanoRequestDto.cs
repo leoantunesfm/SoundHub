@@ -14,7 +14,7 @@ namespace FillGaps.SoundHub.Application.DTOs.Billing
         public string Descricao { get; set; }
 
         [Required]
-        [Range(0.01, 1000)]
+        [Range(0.00, 1000)]
         public decimal Preco { get; set; }
     }
 }

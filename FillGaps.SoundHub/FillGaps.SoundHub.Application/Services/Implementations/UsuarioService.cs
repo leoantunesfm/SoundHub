@@ -36,6 +36,7 @@ namespace FillGaps.SoundHub.Application.Services.Implementations
             if (musica == null) throw new Exception("Música não encontrada.");
 
             usuario.FavoritarMusica(musica);
+
             await _userManager.UpdateAsync(usuario);
         }
 
@@ -46,10 +47,11 @@ namespace FillGaps.SoundHub.Application.Services.Implementations
             if (usuario == null) throw new Exception("Usuário não encontrado.");
 
             var musica = usuario.MusicasFavoritas.FirstOrDefault(m => m.Id == musicaId);
-            if (musica == null) return;
-
-            usuario.DesfavoritarMusica(musica);
-            await _userManager.UpdateAsync(usuario);
+            if (musica != null)
+            {
+                usuario.DesfavoritarMusica(musica);
+                await _userManager.UpdateAsync(usuario);
+            }
         }
 
         public async Task FavoritarArtistaAsync(Guid usuarioId, Guid artistaId)
@@ -72,10 +74,11 @@ namespace FillGaps.SoundHub.Application.Services.Implementations
             if (usuario == null) throw new Exception("Usuário não encontrado.");
 
             var artista = usuario.ArtistasFavoritos.FirstOrDefault(a => a.Id == artistaId);
-            if (artista == null) return;
-
-            usuario.DesfavoritarArtista(artista);
-            await _userManager.UpdateAsync(usuario);
+            if (artista != null)
+            {
+                usuario.DesfavoritarArtista(artista);
+                await _userManager.UpdateAsync(usuario);
+            }
         }
 
         public async Task<FavoritosResponseDto> ObterFavoritosAsync(Guid usuarioId)

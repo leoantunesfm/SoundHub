@@ -9,6 +9,7 @@ using FillGaps.SoundHub.Infrastructure.Data;
 using FillGaps.SoundHub.Infrastructure.Repositories.Billing;
 using FillGaps.SoundHub.Infrastructure.Repositories.Catalog;
 using FillGaps.SoundHub.Infrastructure.Repositories.UserEngagement;
+using FillGaps.SoundHub.WebAPI.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -140,6 +141,8 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Ocorreu um erro ao aplicar as migrations.");
     }
 }
+
+await DbInitializer.SeedAsync(app);
 
 app.MapOpenApi();
 app.UseSwagger();

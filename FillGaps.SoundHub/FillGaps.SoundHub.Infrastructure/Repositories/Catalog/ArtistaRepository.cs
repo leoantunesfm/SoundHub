@@ -26,6 +26,11 @@ namespace FillGaps.SoundHub.Infrastructure.Repositories.Catalog
 
         public void Atualizar(Artista artista)
         {
+            var artistaExistente = _context.Artistas.Local.FirstOrDefault(e => e.Id == artista.Id);
+            if (artistaExistente != null)
+            {
+                _context.Entry(artistaExistente).State = EntityState.Detached;
+            }
             _context.Artistas.Update(artista);
         }
 

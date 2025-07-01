@@ -12,6 +12,20 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Artistas",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Nome = table.Column<string>(type: "varchar(255)", nullable: false),
+                    Descricao = table.Column<string>(type: "varchar(255)", nullable: false),
+                    ImagemUrl = table.Column<string>(type: "varchar(255)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Artistas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -80,6 +94,27 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Albuns",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Titulo = table.Column<string>(type: "varchar(255)", nullable: false),
+                    AnoLancamento = table.Column<int>(type: "int", nullable: false),
+                    CapaUrl = table.Column<string>(type: "varchar(255)", nullable: true),
+                    ArtistaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Albuns", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Albuns_Artistas_ArtistaId",
+                        column: x => x.ArtistaId,
+                        principalTable: "Artistas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -96,27 +131,6 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Artistas",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Nome = table.Column<string>(type: "varchar(255)", nullable: false),
-                    Descricao = table.Column<string>(type: "varchar(255)", nullable: false),
-                    ImagemUrl = table.Column<string>(type: "varchar(255)", nullable: false),
-                    UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Artistas", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Artistas_AspNetUsers_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -227,50 +241,25 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Assinaturas",
+                name: "UsuarioArtistaFavoritos",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PlanoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DataInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DataVigencia = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ArtistasFavoritosId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UsuariosQueFavoritaramId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Assinaturas", x => x.Id);
+                    table.PrimaryKey("PK_UsuarioArtistaFavoritos", x => new { x.ArtistasFavoritosId, x.UsuariosQueFavoritaramId });
                     table.ForeignKey(
-                        name: "FK_Assinaturas_AspNetUsers_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Assinaturas_Planos_PlanoId",
-                        column: x => x.PlanoId,
-                        principalTable: "Planos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Albuns",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Titulo = table.Column<string>(type: "varchar(255)", nullable: false),
-                    AnoLancamento = table.Column<int>(type: "int", nullable: false),
-                    CapaUrl = table.Column<string>(type: "varchar(255)", nullable: false),
-                    ArtistaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Albuns", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Albuns_Artistas_ArtistaId",
-                        column: x => x.ArtistaId,
+                        name: "FK_UsuarioArtistaFavoritos_Artistas_ArtistasFavoritosId",
+                        column: x => x.ArtistasFavoritosId,
                         principalTable: "Artistas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UsuarioArtistaFavoritos_AspNetUsers_UsuariosQueFavoritaramId",
+                        column: x => x.UsuariosQueFavoritaramId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -300,6 +289,54 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Assinaturas",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlanoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DataInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DataVigencia = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Assinaturas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Assinaturas_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Assinaturas_Planos_PlanoId",
+                        column: x => x.PlanoId,
+                        principalTable: "Planos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Musicas",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Titulo = table.Column<string>(type: "varchar(255)", nullable: false),
+                    DuracaoEmSegundos = table.Column<int>(type: "int", nullable: false),
+                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Musicas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Musicas_Albuns_AlbumId",
+                        column: x => x.AlbumId,
+                        principalTable: "Albuns",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Transacoes",
                 columns: table => new
                 {
@@ -317,33 +354,6 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                         name: "FK_Transacoes_Assinaturas_AssinaturaId",
                         column: x => x.AssinaturaId,
                         principalTable: "Assinaturas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Musicas",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Titulo = table.Column<string>(type: "varchar(255)", nullable: false),
-                    DuracaoEmSegundos = table.Column<int>(type: "int", nullable: false),
-                    AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Musicas", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Musicas_Albuns_AlbumId",
-                        column: x => x.AlbumId,
-                        principalTable: "Albuns",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Musicas_AspNetUsers_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -398,6 +408,30 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UsuarioMusicaFavoritos",
+                columns: table => new
+                {
+                    MusicasFavoritasId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UsuariosQueFavoritaramId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsuarioMusicaFavoritos", x => new { x.MusicasFavoritasId, x.UsuariosQueFavoritaramId });
+                    table.ForeignKey(
+                        name: "FK_UsuarioMusicaFavoritos_AspNetUsers_UsuariosQueFavoritaramId",
+                        column: x => x.UsuariosQueFavoritaramId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UsuarioMusicaFavoritos_Musicas_MusicasFavoritasId",
+                        column: x => x.MusicasFavoritasId,
+                        principalTable: "Musicas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Albuns_ArtistaId",
                 table: "Albuns",
@@ -407,11 +441,6 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                 name: "IX_ArtistaGenero_GenerosId",
                 table: "ArtistaGenero",
                 column: "GenerosId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Artistas_UsuarioId",
-                table: "Artistas",
-                column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -474,11 +503,6 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                 column: "AlbumId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Musicas_UsuarioId",
-                table: "Musicas",
-                column: "UsuarioId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PlaylistMusicas_MusicaId",
                 table: "PlaylistMusicas",
                 column: "MusicaId");
@@ -492,6 +516,16 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                 name: "IX_Transacoes_AssinaturaId",
                 table: "Transacoes",
                 column: "AssinaturaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsuarioArtistaFavoritos_UsuariosQueFavoritaramId",
+                table: "UsuarioArtistaFavoritos",
+                column: "UsuariosQueFavoritaramId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsuarioMusicaFavoritos_UsuariosQueFavoritaramId",
+                table: "UsuarioMusicaFavoritos",
+                column: "UsuariosQueFavoritaramId");
         }
 
         /// <inheritdoc />
@@ -525,13 +559,16 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                 name: "Transacoes");
 
             migrationBuilder.DropTable(
+                name: "UsuarioArtistaFavoritos");
+
+            migrationBuilder.DropTable(
+                name: "UsuarioMusicaFavoritos");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Generos");
-
-            migrationBuilder.DropTable(
-                name: "Musicas");
 
             migrationBuilder.DropTable(
                 name: "Playlists");
@@ -540,16 +577,19 @@ namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
                 name: "Assinaturas");
 
             migrationBuilder.DropTable(
-                name: "Albuns");
+                name: "Musicas");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Planos");
 
             migrationBuilder.DropTable(
-                name: "Artistas");
+                name: "Albuns");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Artistas");
         }
     }
 }

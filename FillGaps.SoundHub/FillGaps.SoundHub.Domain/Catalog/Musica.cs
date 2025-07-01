@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FillGaps.SoundHub.Domain.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace FillGaps.SoundHub.Domain.Catalog
         public Guid AlbumId { get; private set; }
 
         public virtual ICollection<Genero> Generos { get; private set; } = new List<Genero>();
+        public virtual ICollection<Usuario> UsuariosQueFavoritaram { get; private set; } = new List<Usuario>();
 
         private Musica() { }
 
