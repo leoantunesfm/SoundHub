@@ -18,11 +18,12 @@ namespace FillGaps.SoundHub.Domain.Catalog
 
         private Musica() { }
 
-        public Musica(string titulo, Duracao duracao)
+        public Musica(string titulo, Duracao duracao, Guid albumId)
         {
             Id = Guid.NewGuid();
             Titulo = titulo;
             Duracao = duracao;
+            AlbumId = albumId;
         }
 
         public void AdicionarGenero(Genero genero)

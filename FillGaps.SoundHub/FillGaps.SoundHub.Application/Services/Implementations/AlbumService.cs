@@ -32,10 +32,9 @@ namespace FillGaps.SoundHub.Application.Services.Implementations
                 throw new Exception("Artista não encontrado.");
             }
 
-            var novoAlbum = new Album(dto.Titulo, dto.AnoLancamento);
+            var novoAlbum = new Album(dto.Titulo, dto.AnoLancamento, dto.ArtistaId);
 
-            artista.AdicionarAlbum(novoAlbum);
-            _artistaRepository.Atualizar(artista);
+            await _albumRepository.AdicionarAsync(novoAlbum);
 
             await _unitOfWork.SalvarAlteracoesAsync();
 

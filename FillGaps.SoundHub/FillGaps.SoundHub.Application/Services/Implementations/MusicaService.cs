@@ -34,7 +34,9 @@ namespace FillGaps.SoundHub.Application.Services.Implementations
                 throw new Exception("Álbum não encontrado.");
             }
 
-            var novaMusica = new Musica(dto.Titulo, new Duracao(dto.DuracaoSegundos));
+            var novaMusica = new Musica(dto.Titulo, new Duracao(dto.DuracaoSegundos), dto.AlbumId);
+
+            await _musicaRepository.AdicionarAsync(novaMusica);
 
             foreach (var generoId in dto.GenerosId)
             {
@@ -44,9 +46,6 @@ namespace FillGaps.SoundHub.Application.Services.Implementations
                     novaMusica.AdicionarGenero(genero);
                 }
             }
-
-            album.AdicionarMusica(novaMusica);
-            _albumRepository.Atualizar(album);
 
             await _unitOfWork.SalvarAlteracoesAsync();
 
@@ -60,3 +59,4 @@ namespace FillGaps.SoundHub.Application.Services.Implementations
         }
     }
 }
+

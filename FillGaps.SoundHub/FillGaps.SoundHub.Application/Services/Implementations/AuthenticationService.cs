@@ -68,6 +68,7 @@ namespace FillGaps.SoundHub.Application.Services.Implementations
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.UserName),
+            new Claim("fullname", user.NomeCompleto),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
