@@ -28,15 +28,38 @@ namespace FillGaps.SoundHub.WebApp.Controllers
                 return View(model);
             }
 
-            var success = await _apiClientService.LoginAsync(model);
+            var token = await _apiClientService.LoginAsync(model);
 
-            if (success)
+            if (!string.IsNullOrWhiteSpace(token))
             {
-                return RedirectToAction("Index", "Dashboard");
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Expires = DateTime.UtcNow.AddHours(8),
+                    IsEssential = true,
+                    SameSite = SameSiteMode.Lax,
+                    Secure = true
+                };
+                Response.Cookies.Append("jwt", token, cookieOptions);
+
+                return RedirectToAction("PostLoginCheck");
             }
 
             ModelState.AddModelError(string.Empty, "Login ou senha inválidos.");
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PostLoginCheck()
+        {
+            var assinatura = await _apiClientService.ObterMinhaAssinaturaAsync();
+
+            if (assinatura == null)
+            {
+                return RedirectToAction("Index", "Subscription");
+            }
+
+            return RedirectToAction("Index", "Dashboard");
         }
 
         [HttpGet]

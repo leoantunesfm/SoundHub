@@ -1,0 +1,55 @@
+﻿@model FillGaps.SoundHub.WebApp.Models.Catalog.MusicasIndexViewModel
+
+@{
+    ViewData["Title"] = "Músicas";
+}
+
+<h1>Explore as Músicas</h1>
+
+@if (!Model.TodasMusicas.Any())
+{
+    <div class="alert alert-info mt-4">
+        Ainda não temos um endpoint na API para buscar todas as músicas. Esta é uma funcionalidade a ser implementada!
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Duração</th>
+                <th class="text-center">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var musica in Model.TodasMusicas)
+            {
+                <tr>
+                    <td>@musica.Titulo</td>
+                    <td>@TimeSpan.FromSeconds(musica.DuracaoSegundos).ToString(@"mm\:ss")</td>
+                    <td class="text-center">
+                        @if (Model.MusicasFavoritasIds.Contains(musica.Id))
+                        {
+                            <form method="post" asp-action="Desfavoritar">
+                                <input type="hidden" name="musicaId" value="@musica.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-heartbreak-fill"></i> Desfavoritar
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" asp-action="Favoritar">
+                                <input type="hidden" name="musicaId" value="@musica.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-heart"></i> Favoritar
+                                </button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

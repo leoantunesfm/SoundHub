@@ -28,5 +28,12 @@ namespace FillGaps.SoundHub.WebAPI.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ObterTodas()
+        {
+            var musicas = await _musicaService.ObterTodasMusicasAsync();
+            return Ok(musicas);
+        }
     }
 }

@@ -65,5 +65,16 @@ namespace FillGaps.SoundHub.Infrastructure.Repositories.Catalog
 
             return await query.ToListAsync();
         }
+
+        public async Task<Musica?> ObterPorTituloComGenerosAsync(string titulo)
+        {
+            return await _context.Musicas
+                .Include(m => m.Generos)
+                .FirstOrDefaultAsync(m => m.Titulo == titulo);
+        }
+        public async Task<IEnumerable<Musica>> ObterTodosAsync()
+        {
+            return await _context.Musicas.AsNoTracking().ToListAsync();
+        }
     }
 }

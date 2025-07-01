@@ -15,5 +15,6 @@ namespace FillGaps.SoundHub.Domain.Catalog.Repositories
         Task<Artista?> ObterPorNomeAsync(string nome);
         Task<IEnumerable<Artista>> ObterTodosAsync();
         Task<IEnumerable<Artista>> PesquisarPorTermoAsync(string termo);
+        Task<Artista?> ObterPorNomeComGenerosAsync(string nome);
     }
 }

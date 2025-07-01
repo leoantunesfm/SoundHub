@@ -86,30 +86,29 @@ namespace FillGaps.SoundHub.WebAPI.Data
 
             if (rock != null && mpb != null && metal != null)
             {
-                var legiao = await artistaRepository.ObterPorNomeAsync("Legião Urbana");
-                if (legiao != null && !legiao.Generos.Any())
+                var legiao = await artistaRepository.ObterPorNomeComGenerosAsync("Legião Urbana");
+                if (legiao != null && !legiao.Generos.Any()) // Agora esta verificação funciona corretamente
                 {
                     legiao.AdicionarGenero(rock);
                     artistaRepository.Atualizar(legiao);
                 }
 
-                var caetano = await artistaRepository.ObterPorNomeAsync("Caetano Veloso");
+                var caetano = await artistaRepository.ObterPorNomeComGenerosAsync("Caetano Veloso");
                 if (caetano != null && !caetano.Generos.Any())
                 {
                     caetano.AdicionarGenero(mpb);
                     artistaRepository.Atualizar(caetano);
                 }
 
-                var sepultura = await artistaRepository.ObterPorNomeAsync("Sepultura");
+                var sepultura = await artistaRepository.ObterPorNomeComGenerosAsync("Sepultura");
                 if (sepultura != null && !sepultura.Generos.Any())
                 {
                     sepultura.AdicionarGenero(metal);
                     artistaRepository.Atualizar(sepultura);
                 }
 
-                // Adicionando gênero a algumas músicas para exemplo
-                var quePais = await musicaRepository.ObterPorTituloAsync("Que País É Este");
-                if (quePais != null && !quePais.Generos.Any())
+                var quePais = await musicaRepository.ObterPorTituloComGenerosAsync("Que País É Este");
+                if (quePais != null && !quePais.Generos.Any()) // Agora esta verificação funciona corretamente
                 {
                     quePais.AdicionarGenero(rock);
                     musicaRepository.Atualizar(quePais);

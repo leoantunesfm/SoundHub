@@ -65,5 +65,12 @@ namespace FillGaps.SoundHub.Infrastructure.Repositories.Catalog
                 .Where(a => a.Nome.Contains(termo) || a.Descricao.Contains(termo))
                 .ToListAsync();
         }
+
+        public async Task<Artista?> ObterPorNomeComGenerosAsync(string nome)
+        {
+            return await _context.Artistas
+                .Include(a => a.Generos) // A chave é carregar os gêneros juntos
+                .FirstOrDefaultAsync(a => a.Nome == nome);
+        }
     }
 }

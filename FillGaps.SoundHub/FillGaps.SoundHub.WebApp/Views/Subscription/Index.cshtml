@@ -1,0 +1,40 @@
+﻿@model IEnumerable<FillGaps.SoundHub.WebApp.Models.Billing.PlanoViewModel>
+
+@{
+    ViewData["Title"] = "Escolha seu Plano";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Escolha seu Plano SoundHub</h1>
+    <p class="lead">Para continuar, você precisa de uma assinatura. Escolha o plano que mais combina com você.</p>
+</div>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="row mt-4 justify-content-center">
+    @foreach (var plano in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 text-center">
+                <div class="card-header">
+                    <h4 class="my-0 fw-normal">@plano.Nome</h4>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h1 class="card-title pricing-card-title">R$ @plano.Preco.ToString("F2")<small class="text-muted fw-light">/mês</small></h1>
+                    <p class="mt-3 mb-4">
+                        @plano.Descricao
+                    </p>
+                    <form method="post" asp-action="Subscribe" class="mt-auto">
+                        <input type="hidden" name="planoId" value="@plano.Id" />
+                        <button type="submit" class="w-100 btn btn-lg btn-primary">Assinar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
