@@ -35,5 +35,17 @@ namespace FillGaps.SoundHub.WebAPI.Controllers
             var musicas = await _musicaService.ObterTodasMusicasAsync();
             return Ok(musicas);
         }
+
+        [HttpGet("pesquisar")]
+        public async Task<IActionResult> Pesquisar([FromQuery] string termo)
+        {
+            if (string.IsNullOrWhiteSpace(termo))
+            {
+                return BadRequest("O termo de busca não pode ser vazio.");
+            }
+
+            var musicas = await _musicaService.PesquisarMusicasAsync(termo);
+            return Ok(musicas);
+        }
     }
 }

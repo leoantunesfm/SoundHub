@@ -16,5 +16,6 @@ namespace FillGaps.SoundHub.Domain.Catalog.Repositories
         Task<IEnumerable<Musica>> PesquisarAsync(string? termo, Guid? generoId);
         Task<Musica?> ObterPorTituloComGenerosAsync(string titulo);
         Task<IEnumerable<Musica>> ObterTodosAsync();
+        Task<IEnumerable<Musica>> ObterTodosComDetalhesAsync();
     }
 }

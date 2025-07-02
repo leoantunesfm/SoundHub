@@ -1,4 +1,5 @@
-﻿using FillGaps.SoundHub.WebApp.Models.Account;
+﻿using FillGaps.SoundHub.WebApp.Models;
+using FillGaps.SoundHub.WebApp.Models.Account;
 using FillGaps.SoundHub.WebApp.Models.Billing;
 using FillGaps.SoundHub.WebApp.Models.Catalog;
 using FillGaps.SoundHub.WebApp.Models.UserEngagement;
@@ -32,10 +33,24 @@ namespace FillGaps.SoundHub.WebApp.Services
             return loginResponse?.Token;
         }
 
-        public async Task<bool> RegisterAsync(RegisterViewModel viewModel)
+        public async Task<(bool Success, string? ErrorMessage)> RegisterAsync(RegisterViewModel viewModel)
         {
             var response = await _httpClient.PostAsJsonAsync("api/auth/registrar", viewModel);
-            return response.IsSuccessStatusCode;
+
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, null);
+            }
+
+            try
+            {
+                var errorContent = await response.Content.ReadFromJsonAsync<ErrorResponseViewModel>();
+                return (false, errorContent?.Message);
+            }
+            catch
+            {
+                return (false, "Ocorreu um erro inesperado na comunicação com a API.");
+            }
         }
 
         public async Task<AssinaturaViewModel?> ObterMinhaAssinaturaAsync()
@@ -54,7 +69,6 @@ namespace FillGaps.SoundHub.WebApp.Services
 
         public async Task<IEnumerable<PlanoViewModel>> ObterPlanosAtivosAsync()
         {
-            AdicionarJwtAoHeader();
             return await _httpClient.GetFromJsonAsync<IEnumerable<PlanoViewModel>>("api/planos/ativos");
         }
 
@@ -93,43 +107,50 @@ namespace FillGaps.SoundHub.WebApp.Services
             return await _httpClient.GetFromJsonAsync<FavoritosViewModel>("api/usuario/favoritos");
         }
 
-        public async Task<ArtistasIndexViewModel> ObterDadosPaginaArtistasAsync()
+        public async Task<ArtistasIndexViewModel> ObterDadosPaginaArtistasAsync(string? termoBusca)
         {
             AdicionarJwtAoHeader();
 
-            // Faz as duas chamadas à API em paralelo para mais eficiência
-            var todosArtistasTask = _httpClient.GetFromJsonAsync<IEnumerable<ArtistaViewModel>>("api/artistas");
-            var meusFavoritosTask = ObterMeusFavoritosAsync();
+            IEnumerable<ArtistaViewModel> artistas;
 
-            await Task.WhenAll(todosArtistasTask, meusFavoritosTask);
-
-            var todosArtistas = await todosArtistasTask;
-            var meusFavoritos = await meusFavoritosTask;
-
-            var viewModel = new ArtistasIndexViewModel
+            if (!string.IsNullOrWhiteSpace(termoBusca))
             {
-                TodosArtistas = todosArtistas ?? new List<ArtistaViewModel>(),
+                artistas = await _httpClient.GetFromJsonAsync<IEnumerable<ArtistaViewModel>>($"api/artistas/pesquisar?termo={termoBusca}");
+            }
+            else
+            {
+                artistas = await _httpClient.GetFromJsonAsync<IEnumerable<ArtistaViewModel>>("api/artistas");
+            }
+
+            var meusFavoritos = await ObterMeusFavoritosAsync();
+
+            return new ArtistasIndexViewModel
+            {
+                TodosArtistas = artistas ?? new List<ArtistaViewModel>(),
                 ArtistasFavoritosIds = meusFavoritos?.ArtistasFavoritos.Select(a => a.Id).ToHashSet() ?? new HashSet<Guid>()
             };
-
-            return viewModel;
         }
 
-        public async Task<MusicasIndexViewModel> ObterDadosPaginaMusicasAsync()
+        public async Task<MusicasIndexViewModel> ObterDadosPaginaMusicasAsync(string? termoBusca)
         {
             AdicionarJwtAoHeader();
 
-            var todasMusicasTask = _httpClient.GetFromJsonAsync<IEnumerable<MusicaViewModel>>("api/musicas");
-            var meusFavoritosTask = ObterMeusFavoritosAsync();
+            IEnumerable<MusicaViewModel> musicas;
 
-            await Task.WhenAll(todasMusicasTask, meusFavoritosTask);
+            if (!string.IsNullOrWhiteSpace(termoBusca))
+            {
+                musicas = await _httpClient.GetFromJsonAsync<IEnumerable<MusicaViewModel>>($"api/musicas/pesquisar?termo={termoBusca}");
+            }
+            else
+            {
+                musicas = await _httpClient.GetFromJsonAsync<IEnumerable<MusicaViewModel>>("api/musicas");
+            }
 
-            var todasMusicas = await todasMusicasTask;
-            var meusFavoritos = await meusFavoritosTask;
+            var meusFavoritos = await ObterMeusFavoritosAsync();
 
             return new MusicasIndexViewModel
             {
-                TodasMusicas = todasMusicas,
+                TodasMusicas = musicas ?? new List<MusicaViewModel>(),
                 MusicasFavoritasIds = meusFavoritos?.MusicasFavoritas.Select(m => m.Id).ToHashSet() ?? new HashSet<Guid>()
             };
         }
@@ -146,6 +167,20 @@ namespace FillGaps.SoundHub.WebApp.Services
             AdicionarJwtAoHeader();
             var response = await _httpClient.DeleteAsync($"api/usuario/favoritos/musicas/{musicaId}");
             return response.IsSuccessStatusCode;
+        }
+
+        public async Task<IEnumerable<ArtistaViewModel>> PesquisarArtistasAsync(string termo)
+        {
+            AdicionarJwtAoHeader();
+
+            return await _httpClient.GetFromJsonAsync<IEnumerable<ArtistaViewModel>>($"api/artistas/pesquisar?termo={termo}");
+        }
+
+        public async Task<IEnumerable<MusicaViewModel>> PesquisarMusicasAsync(string termo)
+        {
+            AdicionarJwtAoHeader();
+
+            return await _httpClient.GetFromJsonAsync<IEnumerable<MusicaViewModel>>($"api/musicas/pesquisar?termo={termo}");
         }
 
         private void AdicionarJwtAoHeader()

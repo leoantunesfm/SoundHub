@@ -77,14 +77,15 @@ namespace FillGaps.SoundHub.WebApp.Controllers
                 return View(model);
             }
 
-            var success = await _apiClientService.RegisterAsync(model);
+            var result = await _apiClientService.RegisterAsync(model);
 
-            if (success)
+            if (result.Success)
             {
+                TempData["SuccessMessage"] = "Conta registrada com sucesso! Por favor, faça o login.";
                 return RedirectToAction("Login");
             }
 
-            ModelState.AddModelError(string.Empty, "Ocorreu um erro ao tentar registrar. Verifique os dados ou tente novamente mais tarde.");
+            ModelState.AddModelError(string.Empty, result.ErrorMessage ?? "Ocorreu um erro ao tentar registrar.");
             return View(model);
         }
 

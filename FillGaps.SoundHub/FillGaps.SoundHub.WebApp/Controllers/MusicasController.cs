@@ -14,9 +14,12 @@ namespace FillGaps.SoundHub.WebApp.Controllers
             _apiClientService = apiClientService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string termoBusca)
         {
-            var viewModel = await _apiClientService.ObterDadosPaginaMusicasAsync();
+            var viewModel = await _apiClientService.ObterDadosPaginaMusicasAsync(termoBusca);
+
+            ViewData["TermoBuscaAtual"] = termoBusca;
+
             return View(viewModel);
         }
 

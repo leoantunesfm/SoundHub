@@ -36,9 +36,16 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<SoundHubDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddIdentity<Usuario, IdentityRole<Guid>>()
-    .AddEntityFrameworkStores<SoundHubDbContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddIdentity<Usuario, IdentityRole<Guid>>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+})
+.AddEntityFrameworkStores<SoundHubDbContext>()
+.AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(options =>
 {

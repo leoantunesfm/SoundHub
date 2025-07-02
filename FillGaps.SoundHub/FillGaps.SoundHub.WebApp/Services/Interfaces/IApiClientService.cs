@@ -8,7 +8,7 @@ namespace FillGaps.SoundHub.WebApp.Services.Interfaces
     public interface IApiClientService
     {
         Task<string?> LoginAsync(LoginViewModel viewModel);
-        Task<bool> RegisterAsync(RegisterViewModel viewModel);
+        Task<(bool Success, string? ErrorMessage)> RegisterAsync(RegisterViewModel viewModel);
         Task<AssinaturaViewModel?> ObterMinhaAssinaturaAsync();
         Task<IEnumerable<PlanoViewModel>> ObterPlanosAtivosAsync();
         Task<bool> CriarAssinaturaAsync(Guid planoId);
@@ -16,9 +16,11 @@ namespace FillGaps.SoundHub.WebApp.Services.Interfaces
         Task<bool> FavoritarArtistaAsync(Guid artistaId);
         Task<bool> DesfavoritarArtistaAsync(Guid artistaId);
         Task<FavoritosViewModel?> ObterMeusFavoritosAsync();
-        Task<ArtistasIndexViewModel> ObterDadosPaginaArtistasAsync();
-        Task<MusicasIndexViewModel> ObterDadosPaginaMusicasAsync();
+        Task<ArtistasIndexViewModel> ObterDadosPaginaArtistasAsync(string? termoBusca);
+        Task<MusicasIndexViewModel> ObterDadosPaginaMusicasAsync(string? termoBusca);
         Task<bool> FavoritarMusicaAsync(Guid musicaId);
         Task<bool> DesfavoritarMusicaAsync(Guid musicaId);
+        Task<IEnumerable<ArtistaViewModel>> PesquisarArtistasAsync(string termo);
+        Task<IEnumerable<MusicaViewModel>> PesquisarMusicasAsync(string termo);
     }
 }

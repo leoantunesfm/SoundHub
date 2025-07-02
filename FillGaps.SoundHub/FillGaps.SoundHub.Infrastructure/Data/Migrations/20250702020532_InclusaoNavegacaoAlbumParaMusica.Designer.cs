@@ -4,6 +4,7 @@ using FillGaps.SoundHub.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FillGaps.SoundHub.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(SoundHubDbContext))]
-    partial class SoundHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250702020532_InclusaoNavegacaoAlbumParaMusica")]
+    partial class InclusaoNavegacaoAlbumParaMusica
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

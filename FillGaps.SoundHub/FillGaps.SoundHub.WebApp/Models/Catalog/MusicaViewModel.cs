@@ -15,5 +15,8 @@ namespace FillGaps.SoundHub.WebApp.Models.Catalog
 
         [JsonPropertyName("albumId")]
         public Guid AlbumId { get; set; }
+
+        [JsonPropertyName("nomeArtista")]
+        public string NomeArtista { get; set; }
     }
 }

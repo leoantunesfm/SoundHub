@@ -51,7 +51,10 @@ namespace FillGaps.SoundHub.Infrastructure.Repositories.Catalog
 
         public async Task<IEnumerable<Musica>> PesquisarAsync(string? termo, Guid? generoId)
         {
-            var query = _context.Musicas.AsNoTracking();
+            var query = _context.Musicas
+                .Include(m => m.Album)
+                    .ThenInclude(a => a.Artista)
+                .AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(termo))
             {
@@ -75,6 +78,15 @@ namespace FillGaps.SoundHub.Infrastructure.Repositories.Catalog
         public async Task<IEnumerable<Musica>> ObterTodosAsync()
         {
             return await _context.Musicas.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<IEnumerable<Musica>> ObterTodosComDetalhesAsync()
+        {
+            return await _context.Musicas
+                .Include(m => m.Album)
+                    .ThenInclude(a => a.Artista)
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }

@@ -14,6 +14,7 @@ namespace FillGaps.SoundHub.Domain.Catalog
         public Duracao Duracao { get; private set; }
 
         public Guid AlbumId { get; private set; }
+        public virtual Album Album { get; private set; }
 
         public virtual ICollection<Genero> Generos { get; private set; } = new List<Genero>();
         public virtual ICollection<Usuario> UsuariosQueFavoritaram { get; private set; } = new List<Usuario>();

@@ -6,41 +6,70 @@
 
 <h1>Explore os Artistas</h1>
 
-<table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Descrição</th>
-            <th class="text-center">Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var artista in Model.TodosArtistas)
-        {
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form asp-action="Index" method="get">
+            <div class="input-group">
+                <input type="text" name="termoBusca" class="form-control" placeholder="Buscar por nome do artista..." value="@ViewData["TermoBuscaAtual"]" />
+                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i> Buscar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (!Model.TodosArtistas.Any())
+{
+    @if (!string.IsNullOrWhiteSpace(ViewData["TermoBuscaAtual"] as string))
+    {
+        <div class="alert alert-warning mt-4">
+            Nenhum artista encontrado para o termo "<strong>@ViewData["TermoBuscaAtual"]</strong>". Tente novamente com outras palavras.
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info mt-4">
+            Ainda não há artistas cadastrados no SoundHub.
+        </div>
+    }
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead>
             <tr>
-                <td>@artista.Nome</td>
-                <td>@artista.Descricao</td>
-                <td class="text-center">
-                    @if (Model.ArtistasFavoritosIds.Contains(artista.Id))
-                    {
-                        <form method="post" asp-action="Desfavoritar">
-                            <input type="hidden" name="artistaId" value="@artista.Id" />
-                            <button type="submit" class="btn btn-sm btn-danger">
-                                <i class="bi bi-heartbreak-fill"></i> Desfavoritar
-                            </button>
-                        </form>
-                    }
-                    else
-                    {
-                        <form method="post" asp-action="Favoritar">
-                            <input type="hidden" name="artistaId" value="@artista.Id" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                <i class="bi bi-heart"></i> Favoritar
-                            </button>
-                        </form>
-                    }
-                </td>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th class="text-center">Ações</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var artista in Model.TodosArtistas)
+            {
+                <tr>
+                    <td>@artista.Nome</td>
+                    <td>@artista.Descricao</td>
+                    <td class="text-center">
+                        @if (Model.ArtistasFavoritosIds.Contains(artista.Id))
+                        {
+                            <form method="post" asp-action="Desfavoritar">
+                                <input type="hidden" name="artistaId" value="@artista.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger" title="Desfavoritar">
+                                    <i class="bi bi-heartbreak-fill"></i> Desfavoritar
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" asp-action="Favoritar">
+                                <input type="hidden" name="artistaId" value="@artista.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Favoritar">
+                                    <i class="bi bi-heart"></i> Favoritar
+                                </button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

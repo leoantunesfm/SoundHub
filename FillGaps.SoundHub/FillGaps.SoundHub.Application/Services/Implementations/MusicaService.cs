@@ -60,14 +60,29 @@ namespace FillGaps.SoundHub.Application.Services.Implementations
 
         public async Task<IEnumerable<MusicaResponseDto>> ObterTodasMusicasAsync()
         {
-            var musicas = await _musicaRepository.ObterTodosAsync();
+            var musicas = await _musicaRepository.ObterTodosComDetalhesAsync();
 
             return musicas.Select(m => new MusicaResponseDto
             {
                 Id = m.Id,
                 Titulo = m.Titulo,
                 DuracaoSegundos = m.Duracao.Segundos,
-                AlbumId = m.AlbumId
+                AlbumId = m.AlbumId,
+                NomeArtista = m.Album.Artista.Nome
+            });
+        }
+
+        public async Task<IEnumerable<MusicaResponseDto>> PesquisarMusicasAsync(string termo)
+        {
+            var musicas = await _musicaRepository.PesquisarAsync(termo, null);
+
+            return musicas.Select(m => new MusicaResponseDto
+            {
+                Id = m.Id,
+                Titulo = m.Titulo,
+                DuracaoSegundos = m.Duracao.Segundos,
+                AlbumId = m.AlbumId,
+                NomeArtista = m.Album.Artista.Nome
             });
         }
     }

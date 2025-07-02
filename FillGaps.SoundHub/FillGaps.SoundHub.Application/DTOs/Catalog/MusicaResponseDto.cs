@@ -12,5 +12,6 @@ namespace FillGaps.SoundHub.Application.DTOs.Catalog
         public string Titulo { get; set; }
         public int DuracaoSegundos { get; set; }
         public Guid AlbumId { get; set; }
+        public string NomeArtista { get; set; }
     }
 }

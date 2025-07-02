@@ -13,6 +13,7 @@ namespace FillGaps.SoundHub.Domain.Catalog
         public int AnoLancamento { get; private set; }
         public string? CapaUrl { get; private set; }
         public Guid ArtistaId { get; private set; }
+        public virtual Artista Artista { get; private set; }
 
         private readonly List<Musica> _musicas = new();
         public IReadOnlyCollection<Musica> Musicas => _musicas.AsReadOnly();

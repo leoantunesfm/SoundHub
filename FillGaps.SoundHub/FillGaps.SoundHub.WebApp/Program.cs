@@ -1,3 +1,4 @@
+using FillGaps.SoundHub.WebApp.BackgroundServices;
 using FillGaps.SoundHub.WebApp.Middleware;
 using FillGaps.SoundHub.WebApp.Services;
 using FillGaps.SoundHub.WebApp.Services.Interfaces;
@@ -16,6 +17,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddHostedService<ApiHealthCheckService>();
 
 builder.Services.AddHttpClient<IApiClientService, ApiClientService>(client =>
 {

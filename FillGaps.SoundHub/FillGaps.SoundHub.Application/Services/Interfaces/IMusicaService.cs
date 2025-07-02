@@ -11,5 +11,6 @@ namespace FillGaps.SoundHub.Application.Services.Interfaces
     {
         Task<MusicaResponseDto> CriarMusicaAsync(CriarMusicaRequestDto dto);
         Task<IEnumerable<MusicaResponseDto>> ObterTodasMusicasAsync();
+        Task<IEnumerable<MusicaResponseDto>> PesquisarMusicasAsync(string termo);
     }
 }
